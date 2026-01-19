@@ -9,7 +9,7 @@ body {
 }
 
 .Happy-Birthday {
-    font-size: 10rem;
+    font-size: 8rem;
     color: rgb(224, 203, 203);
     font-family: Helvetica;
     text-align: center;
@@ -31,4 +31,13 @@ body {
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .Happy-Birthday {
+        font-size: 4rem;
+    }
+    .birthdate {
+        font-size: 1.5rem;
+    }
 }
