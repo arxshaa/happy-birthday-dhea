@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Page</title>
+    <link rel="icon" type="image/png" href="image/kue.png">
+    <link rel="stylesheet" href="page2.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1 class="birthdate">27/01/07</h1>
+        <img src="image/kue.png" alt="Cake Icon" class="navbar-icon">
+        <h1 class="name">Dhea Nafisa</h1>
+    </nav>
+
+    <div class="safe-wrapper">
+        <div class="safe-body">
+            <div class="safe-door" id="safeDoor">
+                <div class="safe-interface">
+                    <div class="screen-container">
+                        <div id="display" class="display">LOCKED</div>
+                        <div id="visibility-icon" class="visibility-icon" onclick="toggleVisibility()">👁️</div>
+                    </div>
+                    <div id="hint" class="hint-label">Hint: Birthdate</div>
+                    <div class="keypad-grid">
+                        <button class="key" onclick="press(1)">1</button>
+                        <button class="key" onclick="press(2)">2</button>
+                        <button class="key" onclick="press(3)">3</button>
+                        <button class="key" onclick="press(4)">4</button>
+                        <button class="key" onclick="press(5)">5</button>
+                        <button class="key" onclick="press(6)">6</button>
+                        <button class="key" onclick="press(7)">7</button>
+                        <button class="key" onclick="press(8)">8</button>
+                        <button class="key" onclick="press(9)">9</button>
+                        <button class="key btn-red" onclick="clearDisplay()">C</button>
+                        <button class="key" onclick="press(0)">0</button>
+                        <button class="key btn-green" onclick="unlock()">E</button>
+                    </div>
+                </div>
+                <div class="handle-bar"></div>
+            </div>
+            <div class="safe-inside">
+                <a href="https://open.spotify.com/playlist/0e8EuTwFQmPwKIebtlhKvs?si=a0093dcaac454ef1&pt=03ec93e394f037abb80262d06d35a89f" target="_blank" class="spotify-link">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg" alt="Spotify" class="spotify-logo-img">
+                </a>
+                <div class="inner-letter" onclick="readLetter()">
+                    <div class="envelope-flap"></div>
+                </div>
+                <div class="butterfly" style="--sx: -30px; --sy: 10px; --x: -250px; --y: -400px; --r: -60deg; --d: 0.2s">🦋</div>
+                <div class="butterfly" style="--sx: 30px; --sy: -10px; --x: 250px; --y: -450px; --r: 60deg; --d: 0.2s">🦋</div>
+                <div class="butterfly" style="--sx: -10px; --sy: -30px; --x: -150px; --y: -500px; --r: -30deg; --d: 0.2s">🦋</div>
+                <div class="butterfly" style="--sx: 20px; --sy: 20px; --x: 150px; --y: -480px; --r: 30deg; --d: 0.2s">🦋</div>
+                <div class="butterfly" style="--sx: 0px; --sy: 0px; --x: 0px; --y: -550px; --r: 0deg; --d: 0.2s">🦋</div>
+                <div class="butterfly" style="--sx: -40px; --sy: -20px; --x: -300px; --y: -200px; --r: -80deg; --d: 0.2s">🦋</div>
+                <div class="butterfly" style="--sx: 40px; --sy: 30px; --x: 300px; --y: -250px; --r: 80deg; --d: 0.2s">🦋</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="letter-overlay" id="letterOverlay">
+        <div class="letter-content">
+            <span class="close-btn" onclick="closeLetter()">&times;</span>
+            <p>
+                Pada akhirnya perasaan ini ga pernah bener-bener hilang, I still want to be with you.<br>
+                Tapi kalo ternyata kamu udah ada "someone new" atau gamau, it's okay kok, jangan paksain perasaan kamu.<br>Oh iya kalo kamu suka sama web ini, let me know okay? Atau mungkin ada yang perlu di perbaikin, aku bakal terima saran dan masukan dari kamu.<br>
+            </p>
+            <div class="whatsapp-container">
+                <a href="https://wa.me/6281311598201" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="whatsapp-logo">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentCode = "";
+        let isVisible = false;
+        let wrongAttempts = 0;
+        const correctCode = "270107";
+        const display = document.getElementById('display');
+        const door = document.getElementById('safeDoor');
+
+        function press(num) {
+            if (door.classList.contains('open')) return;
+            if (currentCode.length < 6) {
+                currentCode += num;
+                updateDisplay();
+            }
+        }
+
+        function toggleVisibility() {
+            isVisible = !isVisible;
+            document.getElementById('visibility-icon').innerText = isVisible ? "🙈" : "👁️";
+            if (currentCode.length > 0) updateDisplay();
+        }
+
+        function updateDisplay() {
+            display.innerText = isVisible ? currentCode : "*".repeat(currentCode.length);
+        }
+
+        function clearDisplay() {
+            if (door.classList.contains('open')) return;
+            currentCode = "";
+            display.innerText = "LOCKED";
+            display.classList.remove('error');
+        }
+
+        function unlock() {
+            if (door.classList.contains('open')) return;
+            if (currentCode === correctCode) {
+                display.innerText = "OPEN";
+                display.style.color = "#4caf50";
+                wrongAttempts = 0;
+                setTimeout(() => {
+                    door.classList.add('open');
+                }, 500);
+            } else {
+                display.innerText = "ERROR";
+                display.classList.add('error');
+                wrongAttempts++;
+                if (wrongAttempts >= 3) {
+                    const hint = document.getElementById('hint');
+                    hint.classList.add('visible');
+                    setTimeout(() => {
+                        hint.classList.remove('visible');
+                    }, 3000);
+                    wrongAttempts = 0;
+                }
+                currentCode = "";
+                setTimeout(() => {
+                    display.innerText = "LOCKED";
+                    display.classList.remove('error');
+                }, 1000);
+            }
+        }
+
+        function readLetter() {
+            document.getElementById('letterOverlay').classList.add('active');
+        }
+
+        function closeLetter() {
+            document.getElementById('letterOverlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
